@@ -60,7 +60,7 @@ GetHorizon is free to use. You are kindly invited to acknowledge its use by citi
 License
 ---------------------
 getHorizon  
-Copyright (c) 2016-2017, Ecole polytechnique fédérale de Lausanne (EPFL)     
+Copyright (c) 2017, Ecole polytechnique fédérale de Lausanne (EPFL)     
 Laboratory of Integrated Performance in Design (LIPID)  
 
 Developer: Giuseppe Peronato, giuseppe.peronato@epfl.ch
