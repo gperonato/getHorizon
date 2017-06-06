@@ -1,9 +1,11 @@
 getHorizon
 ========================================
 This is a script to generate an horizon profile (skyline) from Mapzen Elevation Service.
-It has been developed in the framework of the class ["Renewable energy and solar architecture in Davos"](http://edu.epfl.ch/coursebook/fr/renewable-energy-and-solar-architecture-in-davos-PENS-210) offered at EPFL (Academic Year 2016-17).
+It has been developed in the framework of the class ["Renewable energy and solar architecture in Davos"](http://edu.epfl.ch/coursebook/fr/renewable-energy-and-solar-architecture-in-davos-PENS-210) offered at EPFL (Academic Year 2016-17) and ongoin research at the [Laboratory of Integrated Performance in Design (LIPID)](http://lipid.epfl.ch/research/energy).
 
-getHorizon requires the following Python libraries:
+System requirements
+========================================
+GetHorizon requires the following Python libraries:
 - simplejson
 - urllib
 - polyline
@@ -11,19 +13,33 @@ getHorizon requires the following Python libraries:
 - numpy
 - scipy
 
-It has been tested only on Python3.
+If not on your system please install them, it's easy with `pip` or 'conda'.
+
+### OS and Python version
+  
+Both Python 2 and Python 3 are supported, but the software has been developed and tested on only Windows with Python 3.
+
+Usage and options
+========================================
+To run the script, just execute:
+
+```
+python getHorizon.py
+```
+
+and follow the instructions on the terminal.
 
 Citation
 ========================================
-getHorizon is free to use. You are kindly invited to acknowledge its use by citing it in a research paper you are writing, reports, and/or other applicable materials.
+GetHorizon is free to use. You are kindly invited to acknowledge its use by citing it in a research paper you are writing, reports, and/or other applicable materials.
    
-@misc{peronato_gethorizon_2017,
-	address = {Lausanne},
-	title = {{getHorizon}},
-	publisher = {Ecole polytechnique fédérale de Lausanne (EPFL), Laboratory of Integrated Performance in Design (LIPID)},
-	author = {Peronato, Giuseppe},
-	year = {2017}
-}
+	@misc{peronato_gethorizon_2017,
+		address = {Lausanne},
+		title = {{getHorizon}},
+		publisher = {Ecole polytechnique fédérale de Lausanne (EPFL), Laboratory of Integrated Performance in Design (LIPID)},
+		author = {Peronato, Giuseppe},
+		year = {2017}
+	}
 
 
 Mapzen Elevation Service
@@ -75,3 +91,7 @@ Contributors(a-z):
 ========================================
 [Giuseppe Peronato](https://github.com/gperonato)
 
+
+Acknowledgments
+========================================
+This script has been developed in the framework of the [ACTIVE INTERFACES](http://www.activeinterfaces.ch) research project, which is part of the National Research Programme "Energy Turnaround" (NRP 70) of the Swiss National Science Foundation (SNSF). Further information on the National Research Programme can be found at www.nrp70.ch.
