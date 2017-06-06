@@ -1,7 +1,7 @@
 getHorizon
 ========================================
 This is a script to generate an horizon profile (skyline) from Mapzen Elevation Service.
-It has been developed in the framework of the class ["Renewable energy and solar architecture in Davos"]{http://edu.epfl.ch/coursebook/fr/renewable-energy-and-solar-architecture-in-davos-PENS-210} offered at EPFL (Academic Year 2016-17).
+It has been developed in the framework of the class ["Renewable energy and solar architecture in Davos"](http://edu.epfl.ch/coursebook/fr/renewable-energy-and-solar-architecture-in-davos-PENS-210) offered at EPFL (Academic Year 2016-17).
 
 getHorizon requires the following Python libraries:
 - simplejson
@@ -28,15 +28,15 @@ getHorizon is free to use. You are kindly invited to acknowledge its use by citi
 
 Mapzen Elevation Service
 ========================================
-Mapzen services © Mapzen, OpenStreetMap, and others.
-Mapzen Elevation Service includes data from NASA, USGS, and NOAA.
+Mapzen services © Mapzen, OpenStreetMap, and others.   
+Mapzen Elevation Service includes data from NASA, USGS, and NOAA.   
 https://mapzen.com/rights/
 
 
 License
 ========================================
-getHorizon
-Copyright (c) 2016-2017, Ecole polytechnique fédérale de Lausanne (EPFL)  
+getHorizon  
+Copyright (c) 2016-2017, Ecole polytechnique fédérale de Lausanne (EPFL)     
 Laboratory of Integrated Performance in Design (LIPID)  
 
 Developer: Giuseppe Peronato, giuseppe.peronato@epfl.ch
