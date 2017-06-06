@@ -45,8 +45,9 @@ GetHorizon is free to use. You are kindly invited to acknowledge its use by citi
 
 Mapzen Elevation Service
 ========================================
-Mapzen services © Mapzen, OpenStreetMap, and others.   
-Mapzen Elevation Service includes data from NASA, USGS, and NOAA.   
+Mapzen services © [Mapzen](https://mapzen.com/), [OpenStreetMap](https://www.openstreetmap.org/copyright), and [others](https://mapzen.com/rights/#services-and-data-sources).   
+Mapzen Elevation Service includes data from [NASA](https://www2.jpl.nasa.gov/srtm/), [USGS](https://topotools.cr.usgs.gov/gmted_viewer/), and [NOAA](https://www.ngdc.noaa.gov/mgg/global/global.html).   
+Before using this tool, please make sure you understand and accept the conditions of use of Mapzen services:
 https://mapzen.com/rights/
 
 
@@ -66,7 +67,7 @@ modification, are permitted provided that the following conditions are met:
 * Redistributions in binary form must reproduce the above copyright notice,
   this list of conditions and the following disclaimer in the documentation
   and/or other materials provided with the distribution.
-* Neither the name of [project] nor the names of its
+* Neither the name of getHorizon nor the names of its
   contributors may be used to endorse or promote products derived from
   this software without specific prior written permission.
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
