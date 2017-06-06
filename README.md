@@ -1,6 +1,6 @@
 getHorizon
 ========================================
-GetHorizon is a script to generate an horizon profile (skyline) from a viewpoint using Mapzen Elevation Service.
+GetHorizon is a script to generate a horizon profile (skyline) from a viewpoint using Mapzen Elevation Service.
 It has been developed in the framework of the class ["Renewable energy and solar architecture in Davos"](http://edu.epfl.ch/coursebook/fr/renewable-energy-and-solar-architecture-in-davos-PENS-210) offered at EPFL (Academic Year 2016-17) and of ongoing research at the [Laboratory of Integrated Performance in Design (LIPID)](http://lipid.epfl.ch/research/energy).
 
 System requirements
@@ -13,11 +13,15 @@ GetHorizon requires the following Python libraries:
 - numpy
 - scipy
 
-If not on your system please install them, it's easy with `pip` or `conda`.
+If they are not on your system please install them. It's easy with `pip` or `conda`.
 
 ### OS and Python version
   
 Both Python 2 and Python 3 are supported on Windows and Mac, but the software has been mainly developed and tested on Windows with Python 3 distributed with Anaconda.
+
+### Compiled version
+  
+You can easily obtain a standalone executable version of the scipt using [PyInstaller](http://www.pyinstaller.org/). In order to reduce the size of the executable, you might want to disable some libraries before compiling.
 
 Usage and options
 ---------------------
