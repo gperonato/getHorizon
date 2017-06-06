@@ -4,7 +4,7 @@ GetHorizon is a script to generate an horizon profile (skyline) from a viewpoint
 It has been developed in the framework of the class ["Renewable energy and solar architecture in Davos"](http://edu.epfl.ch/coursebook/fr/renewable-energy-and-solar-architecture-in-davos-PENS-210) offered at EPFL (Academic Year 2016-17) and of ongoing research at the [Laboratory of Integrated Performance in Design (LIPID)](http://lipid.epfl.ch/research/energy).
 
 System requirements
-========================================
+---------------------
 GetHorizon requires the following Python libraries:
 - simplejson
 - urllib
@@ -20,7 +20,7 @@ If not on your system please install them, it's easy with `pip` or `conda`.
 Both Python 2 and Python 3 are supported on Windows and Mac, but the software has been mainly developed and tested on Windows with Python 3 distributed with Anaconda.
 
 Usage and options
-========================================
+---------------------
 To run the script, just execute:
 
 ```
@@ -30,8 +30,17 @@ and follow the instructions on the terminal.
 
 To use the script you need an API key from Mapzen. You can get yours from [here](https://mapzen.com/developers/sign_in). You have to insert the key in a text file called `API.txt` and save it in the same directory as the script.
 
+
+Potential uses
+---------------------
+
+The data generated can be used as  input for different software and models intended for solar energy applications, such as:
+- [CitySim](http://citysim.epfl.ch), for example thorugh its interface GHCitySim.
+- [System Advisor Model (SAM)](https://sam.nrel.gov/)
+
+
 Citation
-========================================
+---------------------
 GetHorizon is free to use. You are kindly invited to acknowledge its use by citing it in a research paper you are writing, reports, and/or other applicable materials.
    
 	@misc{peronato_gethorizon_2017,
@@ -44,7 +53,7 @@ GetHorizon is free to use. You are kindly invited to acknowledge its use by citi
 
 
 Mapzen Elevation Service
-========================================
+---------------------
 Mapzen services © [Mapzen](https://mapzen.com/), [OpenStreetMap](https://www.openstreetmap.org/copyright), and [others](https://mapzen.com/rights/#services-and-data-sources).   
 Mapzen Elevation Service includes data from [NASA](https://www2.jpl.nasa.gov/srtm/), [USGS](https://topotools.cr.usgs.gov/gmted_viewer/), and [NOAA](https://www.ngdc.noaa.gov/mgg/global/global.html).   
 Before using this tool, please make sure you understand and accept the conditions of use of Mapzen services:
@@ -52,7 +61,7 @@ https://mapzen.com/rights/
 
 
 License
-========================================
+---------------------
 getHorizon  
 Copyright (c) 2016-2017, Ecole polytechnique fédérale de Lausanne (EPFL)     
 Laboratory of Integrated Performance in Design (LIPID)  
@@ -85,15 +94,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 Useful links
-========================================
+---------------------
 [Mapzen Elevation Service](https://mapzen.com/documentation/elevation/elevation-service/)
 
 
 Contributors(a-z):
-========================================
+---------------------
 [Giuseppe Peronato](https://github.com/gperonato)
 
 
 Acknowledgments
-========================================
+---------------------
 This script has been developed in the framework of the [ACTIVE INTERFACES](http://www.activeinterfaces.ch) research project, which is part of the National Research Programme "Energy Turnaround" (NRP 70) of the Swiss National Science Foundation (SNSF). Further information on the National Research Programme can be found at www.nrp70.ch.
