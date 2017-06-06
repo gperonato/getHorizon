@@ -39,7 +39,7 @@ Potential uses
 ---------------------
 
 The data generated can be used as  input for different software and models intended for solar energy applications, such as:
-- [CitySim](http://citysim.epfl.ch), for example thorugh its interface GHCitySim.
+- [CitySim](http://citysim.epfl.ch), for example thorugh its interface [GHCitySim](https://github.com/gperonato/GHCitySim).
 - [System Advisor Model (SAM)](https://sam.nrel.gov/)
 
 
