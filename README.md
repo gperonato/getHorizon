@@ -17,7 +17,7 @@ If not on your system please install them, it's easy with `pip` or `conda`.
 
 ### OS and Python version
   
-Both Python 2 and Python 3 are supported, but the software has been developed and tested on Windows with Python 3 distributed with Anaconda.
+Both Python 2 and Python 3 are supported on Windows and Mac, but the software has been mainly developed and tested on Windows with Python 3 distributed with Anaconda.
 
 Usage and options
 ========================================
