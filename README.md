@@ -90,7 +90,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @license BSD 3-clause "New" or "Revised" License <http://spdx.org/licenses/BSD-3-Clause>
 
 
-## Mapzen Elevation Service
+### Mapzen Elevation Service
 This script provides access to Mapzen Elevation Service.   
 Mapzen services © [Mapzen](https://mapzen.com/), [OpenStreetMap](https://www.openstreetmap.org/copyright), and [others](https://mapzen.com/rights/#services-and-data-sources).   
 Mapzen Elevation Service includes data from [NASA](https://www2.jpl.nasa.gov/srtm/), [USGS](https://topotools.cr.usgs.gov/gmted_viewer/), and [NOAA](https://www.ngdc.noaa.gov/mgg/global/global.html).   
