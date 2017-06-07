@@ -235,7 +235,7 @@ if __name__ == '__main__' and Run == True:
     
     
     #Loop over each path
-    #Calls for Google API 
+    #Calls for Mapzen API 
     #Keeps in memory all the points of the path
     dpoints = []
     delevs = []
@@ -282,7 +282,7 @@ if __name__ == '__main__' and Run == True:
         hdist.append(ddists[a][maxindex])
     
     #Output
-    print("\nThe Elevation API has been called {} times. Beware that there is a limit in requests.\n".format(APIcalls))
+    print("\nThe Elevation Service has been called {} times. Beware that there is a limit in requests.\n".format(APIcalls))
     results = [directions]+[hlat]+[hlong]+[hangles]+[helev]+[hdist]
     headers = ["azimuth","latitude","longitude","elevation angle","elevation","distance"]
     writeCSV(results,'horizon.csv',headers,True)
