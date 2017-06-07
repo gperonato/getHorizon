@@ -29,7 +29,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-Created on 25 Apr 2017. Latest modification: June 6 2017
+Created on 25 Apr 2017. Latest modification: June 7 2017
 
 @author: Giuseppe Peronato, <giuseppe.peronato@epfl.ch>
 '''
@@ -77,7 +77,7 @@ def getAPI():
         API_file.close()
         return API
     except:
-        print("License file missing. Please add your API key in a file called API.txt located in the tool directory.")
+        print("API key missing. Please add your Mapzen API key in a file called API.txt located in the tool directory.")
         sys.exit("")
         
 def circlePoint(lat,long,angle,d):
@@ -258,21 +258,6 @@ if __name__ == '__main__' and Run == True:
         dpoints.append(points)
         delevs.append(elevs)
         ddists.append(dists)
-    
-#     for angle in range(0,360,astep):
-#         print("Retrieving elevation data for azimuth "+str(angle)+"°")
-#         directions.append(angle)
-#         points = []
-#         elevs = []
-#         dists = []
-#         point = circlePoint(lat,long,angle,dmax)
-#         APIcalls += 1
-#         elevs,points = getGoogleElevations(str(lat)+','+str(long)+'|'+str(point[0])+','+str(point[1]),int(dmax/dstep))
-#         for p in range(len(points)):
-#             dists.append(getDistance(lat,long,points[p][0],points[p][1]))
-#         dpoints.append(points)
-#         delevs.append(elevs)
-#         ddists.append(dists)
     
     #Keep only the points with maximum elevation angle
     hangles = []
