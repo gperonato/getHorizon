@@ -1,7 +1,7 @@
 '''
 Get Horizon using Elevation APIs
 © All rights reserved. Ecole polytechnique fédérale de Lausanne (EPFL), Switzerland,
-Laboratory of Integrated Performance in Design (LIPID), 2017
+Laboratory of Integrated Performance in Design (LIPID), 2017-2018
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -29,7 +29,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-Created on 25 Apr 2017. Latest modification: June 7 2017
+Created on 25 Apr 2017. Latest modification: April 21 2018
 
 @author: Giuseppe Peronato, <giuseppe.peronato@epfl.ch>
 '''
@@ -46,6 +46,7 @@ from builtins import (
 
 import math
 import simplejson
+import requests
 import urllib.parse
 import urllib.request
 import polyline
@@ -77,7 +78,7 @@ def getAPI():
         API_file.close()
         return API
     except:
-        print("API key missing. Please add your Mapzen API key in a file called API.txt located in the tool directory.")
+        print("API key missing. Please add your Mapquest API key in a file called API.txt located in the tool directory.")
         sys.exit("")
         
 def circlePoint(lat,long,angle,d):
@@ -92,14 +93,54 @@ def circlePoint(lat,long,angle,d):
                          math.cos(d/R)-math.sin(φ1)*math.sin(φ2))
     return (math.degrees(φ2), math.degrees(λ2))
 
+def getOpenElevation(locations=""):
 
-def getMapzenElevations(API,locations=""):
+	URL = "https://api.open-elevation.com/api/v1/lookup"
+
+
+	locations2 = []
+	for loc in locations:
+		dd = {}
+		dd["latitude"] = loc[0]
+		dd["longitude"] = loc[1]
+		locations2.append(dd)
+	d = {}
+	d["locations"] = locations2
+
+	headers = {'content-type': 'application/json'}
+	r = requests.post(URL, json=d, headers=headers)
+ 
+	# extracting data in json format
+	results = r.json()["results"]
+
+	elevations = [] 
+	for pt in results:
+		elevations.append(pt["elevation"])
+	time.sleep(0.3)#minimum is 0.3
+
+	return elevations
+
+
+def getMapquestlevations(API,locations=""):
     encoded = polyline.encode(locations, 6)
     encoded = encoded.replace("\\","\\\\")
-    url = r'https://elevation.mapzen.com/height?json={"range":false,"encoded_polyline":"'+encoded+'"}&api_key=' + API
+    url = r'http://open.mapquestapi.com/elevation/v1/profile?key={0}&shapeFormat=cmp6&latLngCollection={1}'.format(API,encoded)
     response = simplejson.load(urllib.request.urlopen(url))
-    time.sleep(0.3)#minimum is 0.3
-    return (response["height"])
+    elevationprofile = response["elevationProfile"]
+    elevations = []
+    for pt in elevationprofile:
+    	elevations.append(pt["height"])
+    return elevations
+
+# Mapzen services are discontinued as of January 2018
+# def getMapzenElevations(API,locations=""):
+#     encoded = polyline.encode(locations, 6)
+#     encoded = encoded.replace("\\","\\\\")
+#     url = r'https://elevation.mapzen.com/height?json={"range":false,"encoded_polyline":"'+encoded+'"}&api_key=' + API
+#     response = simplejson.load(urllib.request.urlopen(url))
+#     time.sleep(0.3)#minimum is 0.3
+#     return (response["height"])
+
 
 def getDistance(lat1,lon1,lat2,lon2):
     #http://www.movable-type.co.uk/scripts/latlong.html
@@ -177,20 +218,18 @@ Run = True
 if __name__ == '__main__' and Run == True:
         
     print("")
-    print("Get Horizon from Mapzen Elevation service")
+    print("Get Horizon from online elevation services")
     print("")
     print('''This script © All rights reserved.\nEcole polytechnique fédérale de Lausanne (EPFL), Switzerland,\nLaboratory of Integrated Performance in Design (LIPID), 2017''')
     print("Author: Giuseppe Peronato, <giuseppe.peronato@epfl.ch>")
     print("This script is licensed under the BSD 3-clause license.")
     print("")
-    print("Mapzen services © Mapzen, OpenStreetMap, and others.")
-    print("Mapzen Elevation Service includes data from NASA, USGS, and NOAA.")
-    print("https://mapzen.com/rights/")
+    print("Mapquest services © Mapquest, OpenStreetMap, and others.")
+    print("Elevation services includes data from NASA and OpenStreetMap.")
     print("")
     print("")
     
-    #Get API
-    API = getAPI()
+
     #Initialize data
     hpoints = []
     helev = []
@@ -228,7 +267,15 @@ if __name__ == '__main__' and Run == True:
         astep = 10
     else:
         astep = int(astep)
-  
+  	
+    service = input('Elevation Service (Open or Mapquest) (default = Mapquest) --> ')
+    if not service:
+        service = "Mapquest"
+
+
+  	#Get API
+    if service == "Mapquest":
+        API = getAPI()
     
     #Start of script
     print("\nCalculating horizon line for {},{} \nHeight: {}\nSpatial resolution: {} Km\nRange: {} Km\nAngular resolution: {}°\n".format(lat,long,height,dstep,dmax,astep))
@@ -252,7 +299,11 @@ if __name__ == '__main__' and Run == True:
         for dist in range(0,int(dmax*1000),int(dstep*1000)):
             points.append(circlePoint(lat,long,angle,dist/1000))
         APIcalls += 1
-        elevs = getMapzenElevations(API,points)
+        if service == "Mapquest":
+        	elevs = getMapquestlevations(API,points)
+        elif service == "Open":
+        	elevs = getOpenElevation(points)
+        #elevs = getMapzenElevations(API,points)
         for p in range(len(points)):
             dists.append(getDistance(lat,long,points[p][0],points[p][1]))
         dpoints.append(points)
@@ -265,7 +316,12 @@ if __name__ == '__main__' and Run == True:
     hlong = []
     #ha = getGoogleElevation(str(lat)+','+str(long))/1000 #elevation of viewpoint in Km
     APIcalls += 1
-    ha = (getMapzenElevations(API,[(lat,long)])[0] + height)/1000
+    #ha = (getMapzenElevations(API,[(lat,long)])[0] + height)/1000
+    if service == "Mapquest":
+    	ha = (getMapquestlevations(API,[(lat,long)])[0] + height)/1000
+    elif service == "Open":
+    	ha = (getOpenElevation([(lat,long)])[0] + height)/1000
+
     print("Calculating horizon line from elevation data")
     for a in range(len(ddists)): #for each bearing
         angle = []
@@ -282,7 +338,7 @@ if __name__ == '__main__' and Run == True:
         hdist.append(ddists[a][maxindex])
     
     #Output
-    print("\nThe Elevation Service has been called {} times. Beware that there is a limit in requests.\n".format(APIcalls))
+    print("\nThe Elevation Service has been called {} times. Beware that there might a limit in requests.\n".format(APIcalls))
     results = [directions]+[hlat]+[hlong]+[hangles]+[helev]+[hdist]
     headers = ["azimuth","latitude","longitude","elevation angle","elevation","distance"]
     writeCSV(results,'horizon.csv',headers,True)

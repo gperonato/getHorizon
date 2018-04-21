@@ -1,13 +1,14 @@
 getHorizon
 ========================================
-GetHorizon is a script to generate a horizon profile (skyline) from a viewpoint using Mapzen Elevation Service.
-It has been developed in the framework of the class ["Renewable energy and solar architecture in Davos"](http://edu.epfl.ch/coursebook/fr/renewable-energy-and-solar-architecture-in-davos-PENS-210) offered at EPFL (Academic Year 2016-17) and of ongoing research at the [Laboratory of Integrated Performance in Design (LIPID)](http://lipid.epfl.ch/research/energy).
+GetHorizon is a script to generate a horizon profile (skyline) from a viewpoint using online elevation services (currently ["Mapquest Open Elevation API"](https://developer.mapquest.com/documentation/open/elevation-api/) and "Open-Elevation Public API"](https://wwww.open-elevation.com)).
+It was developed in the framework of the class ["Renewable energy and solar architecture in Davos"](http://edu.epfl.ch/coursebook/fr/renewable-energy-and-solar-architecture-in-davos-PENS-210) offered at EPFL (Academic Years 2016-17 and 2017-2018) and of ongoing research at the [Laboratory of Integrated Performance in Design (LIPID)](http://lipid.epfl.ch/research/energy).
 
 System requirements
 ---------------------
 GetHorizon requires the following Python libraries:
 - simplejson
 - urllib
+- requests
 - polyline
 - matplotlib
 - numpy
@@ -32,7 +33,7 @@ python getHorizon.py
 ```
 and follow the instructions on the terminal.
 
-To use the script you need an API key from Mapzen. You can get yours from [here](https://mapzen.com/developers/sign_in). You have to insert the key in a text file called `API.txt` and save it in the same directory as the script.
+To use the Mapquest services, you need an API key from Mapquest. You can get yours from [here](https://developer.mapquest.com/). You have to insert the key in a text file called `API.txt` and save it in the same directory as the script.
 
 
 Potential uses
@@ -90,17 +91,21 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @license BSD 3-clause "New" or "Revised" License <http://spdx.org/licenses/BSD-3-Clause>
 
 
-### Mapzen Elevation Service
-This script provides access to Mapzen Elevation Service.   
-Mapzen services © [Mapzen](https://mapzen.com/), [OpenStreetMap](https://www.openstreetmap.org/copyright), and [others](https://mapzen.com/rights/#services-and-data-sources).   
-Mapzen Elevation Service includes data from [NASA](https://www2.jpl.nasa.gov/srtm/), [USGS](https://topotools.cr.usgs.gov/gmted_viewer/), and [NOAA](https://www.ngdc.noaa.gov/mgg/global/global.html).   
-Before using this tool, please make sure you understand and accept the conditions of use of Mapzen services:
-https://mapzen.com/rights/
+### Mapquest Open Elevation Service
+This script provides access to Mapquest Open Elevation Service.   
+Mapquest services © [Mapquest](https://mapquest.com/), 
+Mapzen Open Elevation Service includes data from [OpenStreetMap](https://www.openstreetmap.org/copyright)
+
+More info [here](https://devblog.mapquest.com/2010/11/11/newest-member-of-the-open-initiatives-open-elevation-service/)
+
+Before using this tool, please make sure you understand and accept the conditions of use of Mapquest services:
+http://hello.mapquest.com/terms-of-use/
 
 
-Useful links
----------------------
-[Mapzen Elevation Service](https://mapzen.com/documentation/elevation/elevation-service/)
+### Open-Elevation Service
+This script provides access to Open-Elevation services.   
+Open-Elevation services © [Open-Elevation](https://open-elevation.com/)
+
 
 
 Contributors(a-z):
