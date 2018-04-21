@@ -220,12 +220,12 @@ if __name__ == '__main__' and Run == True:
     print("")
     print("Get Horizon from online elevation services")
     print("")
-    print('''This script © All rights reserved.\nEcole polytechnique fédérale de Lausanne (EPFL), Switzerland,\nLaboratory of Integrated Performance in Design (LIPID), 2017''')
+    print('''This script © All rights reserved.\nEcole polytechnique fédérale de Lausanne (EPFL), Switzerland,\nLaboratory of Integrated Performance in Design (LIPID), 2017-2018''')
     print("Author: Giuseppe Peronato, <giuseppe.peronato@epfl.ch>")
     print("This script is licensed under the BSD 3-clause license.")
     print("")
-    print("Mapquest services © Mapquest, OpenStreetMap, and others.")
-    print("Elevation services includes data from NASA and OpenStreetMap.")
+    print("")
+    print("See terms of use, data sources and complete credits on\nhttps://github.com/gperonato/getHorizon")
     print("")
     print("")
     
@@ -268,7 +268,7 @@ if __name__ == '__main__' and Run == True:
     else:
         astep = int(astep)
   	
-    service = input('Elevation Service (Open or Mapquest) (default = Mapquest) --> ')
+    service = input('Elevation Service (Open-Elevation or Mapquest) (default = Mapquest) --> ')
     if not service:
         service = "Mapquest"
 
@@ -301,7 +301,7 @@ if __name__ == '__main__' and Run == True:
         APIcalls += 1
         if service == "Mapquest":
         	elevs = getMapquestlevations(API,points)
-        elif service == "Open":
+        elif service == "Open-Elevation":
         	elevs = getOpenElevation(points)
         #elevs = getMapzenElevations(API,points)
         for p in range(len(points)):
@@ -319,7 +319,7 @@ if __name__ == '__main__' and Run == True:
     #ha = (getMapzenElevations(API,[(lat,long)])[0] + height)/1000
     if service == "Mapquest":
     	ha = (getMapquestlevations(API,[(lat,long)])[0] + height)/1000
-    elif service == "Open":
+    elif service == "Open-Elevation":
     	ha = (getOpenElevation([(lat,long)])[0] + height)/1000
 
     print("Calculating horizon line from elevation data")
