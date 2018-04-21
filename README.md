@@ -1,6 +1,6 @@
 getHorizon
 ========================================
-GetHorizon is a script to generate a horizon profile (skyline) from a viewpoint using online elevation services (currently ["Mapquest Open Elevation API"](https://developer.mapquest.com/documentation/open/elevation-api/) and "Open-Elevation Public API"](https://wwww.open-elevation.com)).
+GetHorizon is a script to generate a horizon profile (skyline) from a viewpoint using online elevation services (currently ["Mapquest Open Elevation API"](https://developer.mapquest.com/documentation/open/elevation-api/) and ["Open-Elevation Public API"](https://wwww.open-elevation.com)).
 It was developed in the framework of the class ["Renewable energy and solar architecture in Davos"](http://edu.epfl.ch/coursebook/fr/renewable-energy-and-solar-architecture-in-davos-PENS-210) offered at EPFL (Academic Years 2016-17 and 2017-2018) and of ongoing research at the [Laboratory of Integrated Performance in Design (LIPID)](http://lipid.epfl.ch/research/energy).
 
 System requirements
