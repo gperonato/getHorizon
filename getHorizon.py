@@ -120,7 +120,22 @@ def getOpenElevation(locations=""):
 
 	return elevations
 
+def getRasterElevation(filename,points):
+    import rasterio
+    dataset = rasterio.open(filename)
+    def getRasterValue(lon,lat,dataset):
+        py, px = dataset.index(lon, lat)
+        window = rasterio.windows.Window(px - 1//2, py - 1//2, 1, 1)
+        clip = dataset.read(window=window)
+        value = clip[0][0][0]
+        return value
+    elevs = []
+    for point in points:
+        elevs.append(getRasterValue(point[1],point[0],dataset))
+    return elevs
 
+    
+    
 def getMapquestlevations(API,locations=""):
     encoded = polyline.encode(locations, 6)
     encoded = encoded.replace("\\","\\\\")
@@ -268,7 +283,7 @@ if __name__ == '__main__' and Run == True:
     else:
         astep = int(astep)
   	
-    service = input('Elevation Service (Open-Elevation or Mapquest) (default = Mapquest) --> ')
+    service = input('Elevation Service (Open-Elevation, Mapquest, or raster) (default = Mapquest) --> ')
     if not service:
         service = "Mapquest"
 
@@ -276,7 +291,11 @@ if __name__ == '__main__' and Run == True:
   	#Get API
     if service == "Mapquest":
         API = getAPI()
-    
+        
+  	#Get rSRTM aster
+    if service == "raster":
+        filename = input('Enter the path to the SRTM raster. --> ')
+    print(filename)
     #Start of script
     print("\nCalculating horizon line for {},{} \nHeight: {}\nSpatial resolution: {} Km\nRange: {} Km\nAngular resolution: {}°\n".format(lat,long,height,dstep,dmax,astep))
     
@@ -303,6 +322,8 @@ if __name__ == '__main__' and Run == True:
         	elevs = getMapquestlevations(API,points)
         elif service == "Open-Elevation":
         	elevs = getOpenElevation(points)
+        elif service == "raster":
+        	elevs = getRasterElevation(filename,points)
         #elevs = getMapzenElevations(API,points)
         for p in range(len(points)):
             dists.append(getDistance(lat,long,points[p][0],points[p][1]))
@@ -321,6 +342,8 @@ if __name__ == '__main__' and Run == True:
     	ha = (getMapquestlevations(API,[(lat,long)])[0] + height)/1000
     elif service == "Open-Elevation":
     	ha = (getOpenElevation([(lat,long)])[0] + height)/1000
+    elif service == "raster":
+    	ha = (getRasterElevation(filename,[(lat,long)])[0] + height)/1000
 
     print("Calculating horizon line from elevation data")
     for a in range(len(ddists)): #for each bearing
