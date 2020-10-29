@@ -54,6 +54,7 @@ import time
 import sys, os
 import matplotlib.pyplot as plt
 import numpy as np
+import argparse
 from scipy.interpolate import interp1d
 
 
@@ -231,12 +232,12 @@ def plotPolar(direction,values,ylim,title,filename):
 
 Run = True
 if __name__ == '__main__' and Run == True:
-        
+    
     print("")
     print("Get Horizon from online elevation services")
     print("")
     print('''This script © All rights reserved.\nEcole polytechnique fédérale de Lausanne (EPFL), Switzerland,\nLaboratory of Integrated Performance in Design (LIPID), 2017-2018''')
-    print("Author: Giuseppe Peronato, <giuseppe.peronato@epfl.ch>")
+    print("Author: Giuseppe Peronato, <giuseppe.peronato@alumni.epfl.ch>")
     print("This script is licensed under the BSD 3-clause license.")
     print("")
     print("")
@@ -249,53 +250,74 @@ if __name__ == '__main__' and Run == True:
     hpoints = []
     helev = []
     hdist = []
-
-    # Collect the input from the user
-    latlong = input('Enter the coordinates (lat,long) of the viewpoint (default is Davos = 46.799722,9.833056) --> ').replace(' ','')
-    if not latlong:
-        lat = 46.799722
-        long = 9.833056
-    else:
-        lat = float(latlong.split(',')[0])
-        long = float(latlong.split(',')[1])
-        
-    height = input('Enter the height of the viewpoint with respect to the terrain in m (default = 0). --> ')
-    if not height:
-        height = 0
-    else:
-        height = int(height)
     
-    dstep = input('Enter the spatial resolution in Km (default = 0.1) --> ')
-    if not dstep:
-        dstep = 0.1
-    else:
-       dstep = float(dstep) 
+    if len(sys.argv) > 1:
+        parser = argparse.ArgumentParser(description="Create a horizon profile.")
+        parser.add_argument("--lat", type=float, help="Latitude (decimal)",default=46.799722)
+        parser.add_argument("--long", type=float, help="Longitude (decimal)", default=9.833056)
+        parser.add_argument("--height", type=int, 
+                             help="Height of the viewpoint with respect to the terrain in m", 
+                             default=0)
+        parser.add_argument("--dstep", type=float, 
+                             help="The spatial resolution", 
+                             default=0.1)
+        parser.add_argument("--dmax", type=int, help="The range in Km", default=20)
+        parser.add_argument("--astep", type=int, help="Angular resolution in degrees", default=20)
+        parser.add_argument("--service", choices=['Open-Elevation', 'Mapquest', 'raster'], 
+                            help="Name of elevation service (or raster)", default="Mapquest")
+        parser.add_argument("--filename", type=str, help="Path to the raster file")
+        args = parser.parse_args()
+        globals().update(vars(args))
         
-    dmax = input('Enter the range in Km (default = 20) --> ')
-    if not dmax:
-        dmax = 20
     else:
-        dmax = int(dmax)
+        # Collect the input from the user
+        latlong = input('Enter the coordinates (lat,long) of the viewpoint (default is Davos = 46.799722,9.833056) --> ').replace(' ','')
+        if not latlong:
+            lat = 46.799722
+            long = 9.833056
+        else:
+            lat = float(latlong.split(',')[0])
+            long = float(latlong.split(',')[1])
+            
+        height = input('Enter the height of the viewpoint with respect to the terrain in m (default = 0). --> ')
+        if not height:
+            height = 0
+        else:
+            height = int(height)
         
-    astep = input('Enter the angular resolution in degrees (default = 10). Set 1 if you want to output an obstruction table. --> ')
-    if not astep:
-        astep = 10
-    else:
-        astep = int(astep)
-  	
-    service = input('Elevation Service (Open-Elevation, Mapquest, or raster) (default = Mapquest) --> ')
-    if not service:
-        service = "Mapquest"
-
-
-  	#Get API
-    if service == "Mapquest":
-        API = getAPI()
-        
-  	#Get rSRTM aster
-    if service == "raster":
-        filename = input('Enter the path to the SRTM raster. --> ')
-    print(filename)
+        dstep = input('Enter the spatial resolution in Km (default = 0.1) --> ')
+        if not dstep:
+            dstep = 0.1
+        else:
+           dstep = float(dstep) 
+            
+        dmax = input('Enter the range in Km (default = 20) --> ')
+        if not dmax:
+            dmax = 20
+        else:
+            dmax = int(dmax)
+            
+        astep = input('Enter the angular resolution in degrees (default = 10). Set 1 if you want to output an obstruction table. --> ')
+        if not astep:
+            astep = 10
+        else:
+            astep = int(astep)
+      	
+        service = input('Elevation Service (Open-Elevation, Mapquest, or raster) (default = Mapquest) --> ')
+        if not service:
+            service = "Mapquest"
+    
+    
+      	#Get API
+        if service == "Mapquest":
+            API = getAPI()
+            
+      	#Get rSRTM aster
+        if service == "raster":
+            filename = input('Enter the path to the SRTM raster. --> ')
+        print(filename)
+    
+    
     #Start of script
     print("\nCalculating horizon line for {},{} \nHeight: {}\nSpatial resolution: {} Km\nRange: {} Km\nAngular resolution: {}°\n".format(lat,long,height,dstep,dmax,astep))
     
