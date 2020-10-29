@@ -74,15 +74,6 @@ import argparse
 from scipy.interpolate import interp1d
 
 
-# This useful when compiling with Pyinstaller.  Make sure that files are written in the bundle directory.
-if getattr(sys, "frozen", False):
-    # we are running in a bundle
-    bundle_dir = sys._MEIPASS
-else:
-    # we are running in a normal Python environment
-    bundle_dir = os.path.dirname(os.path.abspath(__file__))
-os.chdir(bundle_dir)
-
 # Default parameters
 R = 6371  # Earth radius in Km
 
@@ -272,8 +263,11 @@ def plotPolar(direction, values, ylim, title, filename):
 ### Main functions
 def calcHorizon(dpoints, delevs, ddists, ha, Verbose=True):
     hangles = []
+    hpoints = []
     hlat = []
     hlong = []
+    helev = []
+    hdist = []
     if Verbose:
         print("Calculating horizon line from elevation data")
     for a in range(len(ddists)):  # for each bearing
@@ -348,9 +342,7 @@ def getElevations(
 
 
 ### Comprehensive function, if you call this file as a module
-def getHorizon(
-    lat, long, height, astep, dmax, dstep, service, filename="", Verbose=False
-):
+def run(lat, long, height, astep, dmax, dstep, service, filename="", Verbose=False):
     if Verbose:
         print(
             "\nCalculating horizon line for {},{} \nHeight: {}\nSpatial resolution: {} Km\nRange: {} Km\nAngular resolution: {}°\n".format(
@@ -382,6 +374,14 @@ def getHorizon(
 
 Run = True
 if __name__ == "__main__" and Run == True:
+    # This useful when compiling with Pyinstaller.  Make sure that files are written in the bundle directory.
+    if getattr(sys, "frozen", False):
+        # we are running in a bundle
+        bundle_dir = sys._MEIPASS
+    else:
+        # we are running in a normal Python environment
+        bundle_dir = os.path.dirname(os.path.abspath(__file__))
+        os.chdir(bundle_dir)
 
     print("")
     print("Get Horizon from online elevation services")
