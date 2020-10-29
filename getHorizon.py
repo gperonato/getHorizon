@@ -229,6 +229,93 @@ def plotPolar(direction,values,ylim,title,filename):
     sp.plot(angle, values)
     plt.savefig(filename)
     print("Image "+filename+" saved.")
+ 
+### Main functions
+def calcHorizon(dpoints,delevs,ddists,ha, Verbose=True):
+    hangles = []
+    hlat = []
+    hlong = []
+    if Verbose:
+        print("Calculating horizon line from elevation data")
+    for a in range(len(ddists)): #for each bearing
+        angle = []
+        for b in range(0,len(ddists[a])): #for each point of the path with that bearing angle
+            hb = delevs[a][b]/1000 #Elevation of point in Km
+            alpha = getElevationAngle(ddists[a][b], ha, hb)
+            angle.append(alpha)
+        maxindex = angle.index(max(angle)) #Index of point with maximum elevation angle
+        hangles.append(angle[maxindex])
+        hpoints.append(dpoints[a][maxindex])
+        hlat.append(dpoints[a][maxindex][0])
+        hlong.append(dpoints[a][maxindex][1])
+        helev.append(delevs[a][maxindex])
+        hdist.append(ddists[a][maxindex])
+    return hangles, hpoints, hlat, hlong, helev, hdist
+
+def getElevations(lat, long, height, astep, dmax, dstep, service, filename="", Verbose=True):
+    #Loop over each path
+    #Calls for API 
+    #Keeps in memory all the points of the path
+    dpoints = []
+    delevs = []
+    ddists = []
+    directions = []
+    APIcalls = 0
+    
+    def getViewPointElevation(lat, long, height, APIcalls):
+        #ha = getGoogleElevation(str(lat)+','+str(long))/1000 #elevation of viewpoint in Km
+        APIcalls += 1
+        #ha = (getMapzenElevations(API,[(lat,long)])[0] + height)/1000
+        if service == "Mapquest":
+        	ha = (getMapquestlevations(API,[(lat,long)])[0] + height)/1000
+        elif service == "Open-Elevation":
+        	ha = (getOpenElevation([(lat,long)])[0] + height)/1000
+        elif service == "raster":
+        	ha = (getRasterElevation(filename,[(lat,long)])[0] + height)/1000
+        return ha, APIcalls
+    
+    ha, APIcalls = getViewPointElevation(lat, long, height, APIcalls)
+    
+    for angle in range(0,360,astep):
+        if Verbose:
+            print("Retrieving elevation data for azimuth "+str(angle)+"°")
+        directions.append(angle)
+        points = []
+        elevs = []
+        dists = []
+        for dist in range(0,int(dmax*1000),int(dstep*1000)):
+            points.append(circlePoint(lat,long,angle,dist/1000))
+        APIcalls += 1
+        if service == "Mapquest":
+        	elevs = getMapquestlevations(API,points)
+        elif service == "Open-Elevation":
+        	elevs = getOpenElevation(points)
+        elif service == "raster":
+        	elevs = getRasterElevation(filename,points)
+        #elevs = getMapzenElevations(API,points)
+        for p in range(len(points)):
+            dists.append(getDistance(lat,long,points[p][0],points[p][1]))
+        dpoints.append(points)
+        delevs.append(elevs)
+        ddists.append(dists)
+    return dpoints, delevs, ddists, ha, directions,APIcalls
+
+### Comprehensive function, if you call this file as a module
+def getHorizon(lat, long, height, astep, dmax, dstep, service, filename="", Verbose=False):
+    if Verbose:
+        print("\nCalculating horizon line for {},{} \nHeight: {}\nSpatial resolution: {} Km\nRange: {} Km\nAngular resolution: {}°\n".format(lat,long,height,dstep,dmax,astep))
+    dpoints, delevs, ddists, ha, directions, APIcalls = getElevations(lat, long, height, astep,dmax,dstep, service, filename, Verbose)
+    
+    #Keep only the points with maximum elevation angle
+    hangles, hpoints, hlat, hlong, helev, hdist = calcHorizon(dpoints,delevs,ddists,ha, Verbose)
+    
+    values = [directions,hlat, hlong, hangles,helev,hdist]
+    keys = ["azimuth","latitude","longitude","elevation angle","elevation","distance"]
+    
+    results = dict(zip(keys, values))
+    return results
+    
+    
 
 Run = True
 if __name__ == '__main__' and Run == True:
@@ -265,7 +352,7 @@ if __name__ == '__main__' and Run == True:
         parser.add_argument("--astep", type=int, help="Angular resolution in degrees", default=20)
         parser.add_argument("--service", choices=['Open-Elevation', 'Mapquest', 'raster'], 
                             help="Name of elevation service (or raster)", default="Mapquest")
-        parser.add_argument("--filename", type=str, help="Path to the raster file")
+        parser.add_argument("--filename", type=str, help="Path to the raster file", default="")
         args = parser.parse_args()
         globals().update(vars(args))
         
@@ -315,72 +402,16 @@ if __name__ == '__main__' and Run == True:
       	#Get rSRTM aster
         if service == "raster":
             filename = input('Enter the path to the SRTM raster. --> ')
-        print(filename)
+        else:
+            filename = ""
     
     
-    #Start of script
+    #Start of routine
     print("\nCalculating horizon line for {},{} \nHeight: {}\nSpatial resolution: {} Km\nRange: {} Km\nAngular resolution: {}°\n".format(lat,long,height,dstep,dmax,astep))
-    
-    
-    #Loop over each path
-    #Calls for Mapzen API 
-    #Keeps in memory all the points of the path
-    dpoints = []
-    delevs = []
-    ddists = []
-    directions = []
-    APIcalls = 0
-    
-    for angle in range(0,360,astep):
-        print("Retrieving elevation data for azimuth "+str(angle)+"°")
-        directions.append(angle)
-        points = []
-        elevs = []
-        dists = []
-        for dist in range(0,int(dmax*1000),int(dstep*1000)):
-            points.append(circlePoint(lat,long,angle,dist/1000))
-        APIcalls += 1
-        if service == "Mapquest":
-        	elevs = getMapquestlevations(API,points)
-        elif service == "Open-Elevation":
-        	elevs = getOpenElevation(points)
-        elif service == "raster":
-        	elevs = getRasterElevation(filename,points)
-        #elevs = getMapzenElevations(API,points)
-        for p in range(len(points)):
-            dists.append(getDistance(lat,long,points[p][0],points[p][1]))
-        dpoints.append(points)
-        delevs.append(elevs)
-        ddists.append(dists)
+    dpoints, delevs, ddists, ha, directions, APIcalls = getElevations(lat, long, height, astep,dmax,dstep, service, filename)
     
     #Keep only the points with maximum elevation angle
-    hangles = []
-    hlat = []
-    hlong = []
-    #ha = getGoogleElevation(str(lat)+','+str(long))/1000 #elevation of viewpoint in Km
-    APIcalls += 1
-    #ha = (getMapzenElevations(API,[(lat,long)])[0] + height)/1000
-    if service == "Mapquest":
-    	ha = (getMapquestlevations(API,[(lat,long)])[0] + height)/1000
-    elif service == "Open-Elevation":
-    	ha = (getOpenElevation([(lat,long)])[0] + height)/1000
-    elif service == "raster":
-    	ha = (getRasterElevation(filename,[(lat,long)])[0] + height)/1000
-
-    print("Calculating horizon line from elevation data")
-    for a in range(len(ddists)): #for each bearing
-        angle = []
-        for b in range(0,len(ddists[a])): #for each point of the path with that bearing angle
-            hb = delevs[a][b]/1000 #Elevation of point in Km
-            alpha = getElevationAngle(ddists[a][b], ha, hb)
-            angle.append(alpha)
-        maxindex = angle.index(max(angle)) #Index of point with maximum elevation angle
-        hangles.append(angle[maxindex])
-        hpoints.append(dpoints[a][maxindex])
-        hlat.append(dpoints[a][maxindex][0])
-        hlong.append(dpoints[a][maxindex][1])
-        helev.append(delevs[a][maxindex])
-        hdist.append(ddists[a][maxindex])
+    hangles, hpoints, hlat, hlong, helev, hdist = calcHorizon(dpoints,delevs,ddists,ha)
     
     #Output
     print("\nThe Elevation Service has been called {} times. Beware that there might a limit in requests.\n".format(APIcalls))
